@@ -33,3 +33,57 @@ jobs:
       - name: Stop application
         run: cd app && docker-compose down
         if: always()
+
+  postgres-build:
+    name: "Build PostgreSQL project TODO: to be removed"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.14
+        id: go
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: "Regenerate templates TODO: remove this step"
+        run: cd transform && go run transformer.go
+      - name: Generate PostgreSQL project
+        run: go run main.go init --db postgres app
+      - name: Start the application
+        run: cd app && docker-compose up -d
+      - name: Check availability of backend
+        run: timeout 10 bash -c 'until curl -s localhost:8080/api/technologies | grep Go > /dev/null; do sleep 1; done'
+      - name: Check availability of frontend
+        run: |
+          npm i domcurl
+          timeout 10 bash -c 'until ./node_modules/domcurl/index.js http://localhost:8080 | grep Go > /dev/null; do sleep 1; done'
+      - name: Stop application
+        run: cd app && docker-compose down
+        if: always()
+
+  mysql-build:
+    name: "Build MySQL project  TODO: to be removed"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.14
+        id: go
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: "Regenerate templates TODO: remove this step"
+        run: cd transform && go run transformer.go
+      - name: Generate MySQL project
+        run: go run main.go init --db mysql app
+      - name: Start the application
+        run: cd app && docker-compose up -d
+      - name: Check availability of backend
+        run: timeout 10 bash -c 'until curl -s localhost:8080/api/technologies | grep Go > /dev/null; do sleep 1; done'
+      - name: Check availability of frontend
+        run: |
+          npm i domcurl
+          timeout 10 bash -c 'until ./node_modules/domcurl/index.js http://localhost:8080 | grep Go > /dev/null; do sleep 1; done'
+      - name: Stop application
+        run: cd app && docker-compose down
+        if: always()

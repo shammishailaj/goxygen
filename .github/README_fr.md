@@ -32,13 +32,16 @@
     <a href="https://github.com/Shpota/goxygen/tree/master/.github/README_id.md">
         <img height="20px" src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/flags/4x3/id.svg">
     </a>
+    <a href="https://github.com/Shpota/goxygen/tree/master/.github/README_he.md">
+        <img height="20px" src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/flags/4x3/il.svg">
+    </a>
     <br>
     Goxygen
     <a href="https://github.com/Shpota/goxygen/actions?query=workflow%3Abuild">
         <img src="https://github.com/Shpota/goxygen/workflows/build/badge.svg">
     </a>
     <a href="https://github.com/Shpota/goxygen/releases">
-        <img src="https://img.shields.io/badge/version-v0.2.2-green">
+        <img src="https://img.shields.io/badge/version-v0.3.1-green">
     </a>
     <a href="https://gitter.im/goxygen/community">
         <img src="https://badges.gitter.im/goxygen/community.svg">
@@ -50,45 +53,80 @@
 
 <img src="../templates/react.webapp/src/logo.svg" align="right" width="230px" alt="goxygen logo">
 
-**Générer un projet web avec Go, Angular/React/Vue, et MongoDB en quelques secondes.**
+**Générer un projet web avec Go et Angular/React/Vue en quelques secondes.**
 
 Goxygen vise à vous faire gagner du temps lors de la mise en place d'un nouveau projet. Il
 crée un squelette d'application avec une configuration complète par défaut.
 Vous pouvez commencer immédiatement à implémenter votre logique métier.
-Goxygen génère du code Backend en Go, le connecte aux composants Frontend, fournit un 
-Dockerfile pour l'application et crée des fichiers Docker-compose pour une exécution pratique 
+Goxygen génère du code Backend en Go, le connecte aux composants Frontend, fournit un
+Dockerfile pour l'application et crée des fichiers Docker-compose pour une exécution pratique
 dans des environnements de développement et de production.
+
+<table>
+    <thead>
+    <tr align="center">
+        <td colspan=4><b>Technoligies supportées</b></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr align="center">
+        <td align="center">Front End</td>
+        <td>Angular</td>
+        <td>React</td>
+        <td>Vue</td>
+    </tr>
+    <tr align="center">
+        <td>Back End</td>
+        <td colspan=3>Go</td>
+    </tr>
+    <tr align="center">
+        <td>Base de données</td>
+        <td>MongoDB</td>
+        <td>MySQL</td>
+        <td>PostgreSQL</td>
+    </tr>
+    </tbody>
+</table>
 
 ## Guide d'utilisation
 
 Vous devez disposer de la version 1.11 ou supérieure de Go sur votre machine.
+
 ```go
 go get -u github.com/shpota/goxygen
 go run github.com/shpota/goxygen init my-app
 ```
+
 Ces commandes génèrent un projet dans le dossier `my-app`.
 
-Par défaut, le projet est généré avec un frontend React. Vous pouvez choisir parmis
-Angular, React ou Vue en passant les arguments `angular`, `react` ou `vue` au flag `--frontend`. 
-Par exemple:
+Par défaut, React et MongoDB seront utilisés. Vous pouvez
+choisir divers frameworks frontend ou bases de données en
+utilisant les flags `--frontend` et `--db`. Par exemple, cette
+commande va créer un projet avec Vue et PostreSQL:
 
 ```go
-go run github.com/shpota/goxygen init --frontend vue my-app
+go run github.com/shpota/goxygen init --frontend vue --db postgres my-app
 ```
 
+Le flag `--frontend` accepte les valeurs `angular`, `react` and `vue`.
+Le flag `--db` accepte les valeurs `mongo`, `mysql` and `postgres`.
+
 Le projet généré est prêt à l'utilisation avec `docker-compose`:
+
 ```sh
 cd my-app
 docker-compose up
 ```
 
-Aprés la fin du build, l'application est accessible sur http://localhost:8080.
+Aprés la fin du build, l'application est
+accessible sur http://localhost:8080.
 
-Vous trouverez plus de détails sur l'utilisation du projet généré dans son fichier README.
+Vous trouverez plus de détails sur l'utilisation
+du projet généré dans son fichier README.
 
 ![Présentation](showcase.gif)
 
-## Structure d'un projet généré (application React)
+## Structure d'un projet généré (application React/MongoDB)
 
     my-app
     ├── server                   # fichier du projet Go
@@ -97,12 +135,12 @@ Vous trouverez plus de détails sur l'utilisation du projet généré dans son f
     │   ├── web                  # REST APIs, serveur web
     │   ├── server.go            # point d'entrée du serveur
     │   └── go.mod               # dépendances du serveur
-    ├── webapp                    
+    ├── webapp
     │   ├── public               # icones, fichiers statiques, et index.html
-    │   ├── src                       
+    │   ├── src
     │   │   ├── App.js           # le composant React principale
     │   │   ├── App.css          # style spécifiques au composant App
-    │   │   ├── index.js         # le point d'entrée de l'application          
+    │   │   ├── index.js         # le point d'entrée de l'application
     │   │   └── index.css        # styles globaux
     │   ├── package.json         # dépendances du frontend
     │   ├── .env.development     # endpoint de l'API pour l'environnement de développement
@@ -120,20 +158,19 @@ pour des raisons de simplicité.
 
 ## Dépendances
 
-Goxygen génére un projet avec une structure basique et ne vous force pas à utiliser des 
-outils spécifiques. C'est pour cela que les seules dépendances utilisées dans le projet 
-sont [mongo-go-driver](https://github.com/mongodb/mongo-go-driver) côté backend et 
-[axios](https://github.com/axios/axios) côté fronted les projets React et Vue. Les projets 
-Angular utilisent leurs propres librairies.
+Goxygen génére un projet avec une structure basique et ne vous force pas à utiliser des
+outils spécifiques. C'est pour cela que les seules dépendances utilisées dans le projet
+sont database driver côté backend et [axios](https://github.com/axios/axios) côté
+frontend les projets React et Vue. Les projets Angular utilisent leurs propres librairies.
 
 ## Comment contribuer
 
 Si vous trouvez un bug ou avez une idée sur comment améliorer le projet
 [créez une issue](https://github.com/Shpota/goxygen/issues)
 et nous corrigerons le problème le plus rapidement possible. Vous pouvez aussi
-proposer vos propres changement avec des Pull Request. Faites un Fork du dépôt, 
-effectuer vos modifications, envoyez-nous un pull request et nous le consulterons dans 
-les plus brefs délais. Nous disposons aussi d'un [chat Gitter](https://gitter.im/goxygen/community) 
+proposer vos propres changement avec des Pull Request. Faites un Fork du dépôt,
+effectuer vos modifications, envoyez-nous un pull request et nous le consulterons dans
+les plus brefs délais. Nous disposons aussi d'un [chat Gitter](https://gitter.im/goxygen/community)
 où nous discutons tous les changements.
 
 ### Crédits
